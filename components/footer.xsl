@@ -2,16 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template name="lastFooter">
-  <table cellspacing="0" cellpadding="5" border="0" role="presentation">
-    <xsl:attribute name="style">
-      <xsl:call-template name="footerTableStyleCss" />
-    </xsl:attribute>
-    <tr>
-      <td style="color: #333333; font-size: 0.9em; padding-top: 1em;">
-        <p style="margin: 0;">University of Minnesota Libraries</p>
-      </td>
-    </tr>
-  </table>
+  <!-- Suppressed redundant header above links -->
 </xsl:template>
 
 <xsl:template name="myAccount">
@@ -39,7 +30,6 @@
 </xsl:template>
 
 <xsl:template name="Disclaimer">
-  <!-- Decorative/informational block; wrapped in presentation table -->
   <table cellspacing="0" cellpadding="2" border="0" role="presentation">
     <tr>
       <td style="font-size: 0.85em; color: #555555;">
