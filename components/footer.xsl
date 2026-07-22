@@ -1,57 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:stylesheet version="1.0"
-xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-
-
-
-<xsl:template name="salutation">
-
-</xsl:template>
 <xsl:template name="lastFooter">
-
-	<table>
-	<xsl:attribute name="style">
-		<xsl:call-template name="footerTableStyleCss" /> <!-- style.xsl -->
-	</xsl:attribute>
-
-	</table>
-<hr />
+  <table cellspacing="0" cellpadding="5" border="0" role="presentation">
+    <xsl:attribute name="style">
+      <xsl:call-template name="footerTableStyleCss" />
+    </xsl:attribute>
+    <tr>
+      <td style="color: #333333; font-size: 0.9em; padding-top: 1em;">
+        <p style="margin: 0;">University of Minnesota Libraries</p>
+      </td>
+    </tr>
+  </table>
 </xsl:template>
-<xsl:template name="contactUs">
-	<table align="left">
-	<tr>
-	<td align="left">
-	<a>
-                        <xsl:attribute name="href">
-                          @@email_contact_us@@
-                        </xsl:attribute>
-						@@contact_us@@
-					</a>
-	</td>
-</tr>
-	</table>
-</xsl:template>
+
 <xsl:template name="myAccount">
-	<table align="right">
-	<tr>
-	<td align="right">
-	<a>
-                        <xsl:attribute name="href">
-                          @@email_my_account@@
-                        </xsl:attribute>
-						@@my_account@@
-					</a>
-	</td>
-</tr>
-	</table>
+  <table cellspacing="0" cellpadding="2" border="0" role="presentation">
+    <tr>
+      <td>
+        <a href="https://primo.lib.umn.edu" target="_blank" style="color: #0056b3; text-decoration: underline;">
+          Log in to My Library Account to view loans and renewals
+        </a>
+      </td>
+    </tr>
+  </table>
+</xsl:template>
+
+<xsl:template name="contactUs">
+  <table cellspacing="0" cellpadding="2" border="0" role="presentation">
+    <tr>
+      <td>
+        <a href="https://www.lib.umn.edu/contact" target="_blank" style="color: #0056b3; text-decoration: underline;">
+          Contact University of Minnesota Libraries for assistance
+        </a>
+      </td>
+    </tr>
+  </table>
 </xsl:template>
 
 <xsl:template name="Disclaimer">
-<p style="display: inline-block;"><b>CONFIDENTIALITY NOTICE:</b> This e-mail may include confidential information, and may be used only by the person(s) to whom it is addressed or intended. Please note that the use of any information within may be restricted by privacy laws.  If the reader of this e-mail is not the intended recipient, the reader is hereby notified that any distribution or copying of this e-mail is prohibited. If you have received this e-mail in error, please notify the sender by replying to this message and delete this e-mail immediately.</p>
-
-
+  <!-- Decorative/informational block; wrapped in presentation table -->
+  <table cellspacing="0" cellpadding="2" border="0" role="presentation">
+    <tr>
+      <td style="font-size: 0.85em; color: #555555;">
+        <xsl:value-of select="notification_data/legal_note"/>
+      </td>
+    </tr>
+  </table>
 </xsl:template>
 
 </xsl:stylesheet>
