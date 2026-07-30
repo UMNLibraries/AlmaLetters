@@ -21,7 +21,7 @@
   <table cellspacing="0" cellpadding="2" border="0" role="presentation">
     <tr>
       <td>
-        <a href="https://www.lib.umn.edu/contact" target="_blank" style="color: #0056b3; text-decoration: underline;">
+        <a href="https://www.lib.umn.edu/system-libraries" target="_blank" style="color: #0056b3; text-decoration: underline;">
           Contact University of Minnesota Libraries for assistance
         </a>
       </td>
