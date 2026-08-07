@@ -178,8 +178,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
  
         <!-- footer.xsl --> 
         <xsl:call-template name="lastFooter" /> 
-        <xsl:call-template name="myAccount" /> 
-        <xsl:call-template name="contactUs" /> 
         <xsl:call-template name="Disclaimer" /> 
       </body> 
     </html> 
