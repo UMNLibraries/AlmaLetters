@@ -33,7 +33,7 @@
   <table cellspacing="0" cellpadding="2" border="0" role="presentation">
     <tr>
       <td style="font-size: 0.85em; color: #555555;">
-        <xsl:value-of select="notification_data/legal_note"/>
+        <p style="display: inline-block;"><b>CONFIDENTIALITY NOTICE:</b> This e-mail may include confidential information, and may be used only by the person(s) to whom it is addressed or intended. Please note that the use of any information within may be restricted by privacy laws.  If the reader of this e-mail is not the intended recipient, the reader is hereby notified that any distribution or copying of this e-mail is prohibited. If you have received this e-mail in error, please notify the sender by replying to this message and delete this e-mail immediately.</p>
       </td>
     </tr>
   </table>
