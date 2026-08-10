@@ -6,12 +6,12 @@
     <p style="margin: 0.2em 0;">
       <strong>Title:</strong>&#160;<xsl:value-of select="notification_data/item_loan/title"/>
     </p>
-    <xsl:if select="notification_data/item_loan/author">
+    <xsl:if test="notification_data/item_loan/author != ''">
       <p style="margin: 0.2em 0;">
         <strong>Author:</strong>&#160;<xsl:value-of select="notification_data/item_loan/author"/>
       </p>
     </xsl:if>
-    <xsl:if select="notification_data/item_loan/barcode">
+    <xsl:if test="notification_data/item_loan/barcode != ''">
       <p style="margin: 0.2em 0;">
         <strong>Barcode:</strong>&#160;<xsl:value-of select="notification_data/item_loan/barcode"/>
       </p>
