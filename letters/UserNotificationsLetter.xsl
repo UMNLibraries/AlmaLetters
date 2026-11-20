@@ -1,138 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:include href="header.xsl" />
-	<xsl:include href="senderReceiver.xsl" />
-	<xsl:include href="mailReason.xsl" />
-	<xsl:include href="footer.xsl" />
-	<xsl:include href="style.xsl" />
-	<xsl:include href="recordTitle.xsl" />
-	<xsl:template match="/">
-		<html>
-			<xsl:if test="notification_data/languages/string">
-				<xsl:attribute name="lang">
-					<xsl:value-of select="notification_data/languages/string"/>
-				</xsl:attribute>
-			</xsl:if>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-			<head>
-				<title>
-					<xsl:value-of select="notification_data/general_data/subject"/>
-				</title>
+  <xsl:include href="header.xsl" />
+  <xsl:include href="senderReceiver.xsl" />
+  <xsl:include href="mailReason.xsl" />
+  <xsl:include href="footer.xsl" />
+  <xsl:include href="style.xsl" />
+  <xsl:include href="recordTitle.xsl" />
 
-				<xsl:call-template name="generalStyle" />
-			</head>
-			<body>
-				<xsl:attribute name="style">
-					<xsl:call-template name="bodyStyleCss" />
-					<!-- style.xsl -->
-				</xsl:attribute>
-				<xsl:call-template name="head" />
-				<!-- header.xsl -->
+  <xsl:template match="/">
+    <html lang="en">
+      <xsl:if test="notification_data/languages/string">
+        <xsl:attribute name="lang">
+          <xsl:value-of select="notification_data/languages/string"/>
+        </xsl:attribute>
+      </xsl:if>
 
-				<table role='presentation' >
+      <head>
+        <title>
+          <xsl:value-of select="notification_data/general_data/subject"/>
+        </title>
 
-							<tr>
-								<td>
-									<h3>@@Dear@@</h3>
-								</td>
-							</tr>
+        <xsl:call-template name="generalStyle" />
+      </head>
 
-				</table>
+      <body>
+        <xsl:attribute name="style">
+          <xsl:call-template name="bodyStyleCss" /><!-- style.xsl -->
+        </xsl:attribute>
 
-				<div class="messageArea">
-					<div class="messageBody">
+        <xsl:call-template name="head" /><!-- header.xsl -->
 
+        <!-- Greeting Salutation -->
+        <table role="presentation" cellspacing="0" cellpadding="5" border="0">
+          <tr>
+            <td>
+              <p style="margin: 0;">@@Dear@@</p>
+            </td>
+          </tr>
+        </table>
 
+        <div class="messageArea">
+          <div class="messageBody">
 
-						<table role='presentation'  cellspacing="0" cellpadding="5" border="0">
-							<xsl:choose>
-								<xsl:when test="notification_data/notification_type = 'NOTIFY_PASSWORD_CHANGE' ">
-									<tr>
-										<td>
-											<h3>@@Line_1@@</h3>
-											<xsl:value-of select="notification_data/temp_password" />
-										</td>
+            <!-- Password Change Notification Body -->
+            <xsl:if test="notification_data/notification_type = 'NOTIFY_PASSWORD_CHANGE'">
+              <table role="presentation" cellspacing="0" cellpadding="5" border="0">
+                <tr>
+                  <td>
+                    <p style="margin: 0;">
+                      @@Line_1@@
+                      <xsl:if test="notification_data/temp_password != ''">
+                        <xsl:text> </xsl:text><strong><xsl:value-of select="notification_data/temp_password" /></strong>
+                      </xsl:if>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p style="margin: 0;">@@Line_2@@</p>
+                  </td>
+                </tr>
+              </table>
+            </xsl:if>
 
-									</tr>
-									<tr>
+            <br />
 
-										<td>
-											<h3>@@Line_2@@</h3>
-										</td>
-									</tr>
-								</xsl:when>
+            <!-- Signature & Organization Unit Address Block -->
+            <table role="presentation" cellspacing="0" cellpadding="2" border="0">
+              <tr>
+                <td>@@Sincerely@@</td>
+              </tr>
+              <tr>
+                <td>
+                  <address style="font-style: normal; line-height: 1.4; color: #333333;">
+                    <xsl:if test="notification_data/organization_unit/name != ''">
+                      <strong><xsl:value-of select="notification_data/organization_unit/name" /></strong><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/organization_unit/address/line1 != ''">
+                      <xsl:value-of select="notification_data/organization_unit/address/line1" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/organization_unit/address/line2 != ''">
+                      <xsl:value-of select="notification_data/organization_unit/address/line2" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/organization_unit/address/line3 != ''">
+                      <xsl:value-of select="notification_data/organization_unit/address/line3" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/organization_unit/address/line4 != ''">
+                      <xsl:value-of select="notification_data/organization_unit/address/line4" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/organization_unit/address/line5 != ''">
+                      <xsl:value-of select="notification_data/organization_unit/address/line5" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/organization_unit/address/city != ''">
+                      <xsl:value-of select="notification_data/organization_unit/address/city" />
+                      <xsl:if test="notification_data/organization_unit/address/country != ''">, </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="notification_data/organization_unit/address/country != ''">
+                      <xsl:value-of select="notification_data/organization_unit/address/country" />
+                    </xsl:if>
+                  </address>
+                </td>
+              </tr>
+            </table>
 
-							</xsl:choose>
-						</table>
-						<br />
-						<table role='presentation' >
+          </div>
+        </div>
 
-							<tr>
-								<td>@@Sincerely@@</td>
-							</tr>
-							<tr>
-								<td>
-									<xsl:value-of select="notification_data/organization_unit/name" />
-								</td>
-							</tr>
-							<xsl:if test="notification_data/organization_unit/address/line1 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/organization_unit/address/line1" />
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/organization_unit/address/line2 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/organization_unit/address/line2" />
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/organization_unit/address/line3 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/organization_unit/address/line3" />
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/organization_unit/address/line4 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/organization_unit/address/line4" />
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/organization_unit/address/line5 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/organization_unit/address/line5" />
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/organization_unit/address/city !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/organization_unit/address/city" />
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/organization_unit/address/country !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/organization_unit/address/country" />
-									</td>
-								</tr>
-
-							</xsl:if>
-
-						</table>
-					</div>
-				</div>
-				<xsl:call-template name="lastFooter" />
-				<!-- footer.xsl -->
-			</body>
-		</html>
-	</xsl:template>
+        <!-- footer.xsl -->
+        <xsl:call-template name="lastFooter" />
+      </body>
+    </html>
+  </xsl:template>
 </xsl:stylesheet>
