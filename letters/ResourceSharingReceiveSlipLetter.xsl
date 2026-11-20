@@ -1,182 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-	<xsl:include href="header.xsl"/>
-	<xsl:include href="senderReceiver.xsl"/>
-	<xsl:include href="mailReason.xsl"/>
-	<xsl:include href="footer.xsl"/>
-	<xsl:include href="style.xsl"/>
-	<xsl:include href="recordTitle.xsl"/>
-	<xsl:template match="/">
-		<html>
-			<xsl:if test="notification_data/languages/string">
-				<xsl:attribute name="lang">
-					<xsl:value-of select="notification_data/languages/string"/>
-				</xsl:attribute>
-			</xsl:if>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-			<head>
-				<title>
-					<xsl:value-of select="notification_data/general_data/subject"/>
-				</title>
+  <xsl:include href="header.xsl" />
+  <xsl:include href="senderReceiver.xsl" />
+  <xsl:include href="mailReason.xsl" />
+  <xsl:include href="footer.xsl" />
+  <xsl:include href="style.xsl" />
+  <xsl:include href="recordTitle.xsl" />
 
-				<xsl:call-template name="generalStyle"/>
-			</head>
-			<body>
-				<xsl:attribute name="style">
-					<xsl:call-template name="bodyStyleCss"/>
-					<!-- style.xsl -->
-				</xsl:attribute>
-				<xsl:call-template name="head"/>
+  <xsl:template match="/">
+    <html lang="en">
+      <xsl:if test="notification_data/languages/string">
+        <xsl:attribute name="lang">
+          <xsl:value-of select="notification_data/languages/string"/>
+        </xsl:attribute>
+      </xsl:if>
 
-				<div class="messageArea">
-					<div class="messageBody">
-						<table role='presentation'  cellspacing="0" cellpadding="5" border="0">
-							<xsl:attribute name="style">
-								<xsl:call-template name="listStyleCss"/>
-								<!-- style.xsl -->
-							</xsl:attribute>
+      <head>
+        <title>
+          <xsl:value-of select="notification_data/general_data/subject"/>
+        </title>
 
-							<xsl:if test="notification_data/barcode !=''">
-								<tr>
-								  <td>
-								  	<br/>
-								  	<strong>@@item_barcode@@ </strong> <img src="Barcode.png" alt="Barcode" />
-								  </td>
-								</tr>
-							</xsl:if>
-<tr>
-								<td>
-									<br/>
-									<strong> @@patron_name@@  </strong>
-									<xsl:value-of select="notification_data/patron_name"/>
-								</td>
-							</tr>
-						
+        <xsl:call-template name="generalStyle" />
+      </head>
 
-							<tr>
-								<td>
-									<br/>
-									<strong> @@title@@: </strong>
-									<xsl:value-of select="notification_data/request/display/normalized_title"/>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<strong> @@author@@: </strong>
-									<xsl:value-of select="notification_data/request/display/author"/>
-								</td>
-							</tr>
+      <body>
+        <xsl:attribute name="style">
+          <xsl:call-template name="bodyStyleCss" /><!-- style.xsl -->
+        </xsl:attribute>
 
-							
+        <xsl:call-template name="head" /><!-- header.xsl -->
 
-							
-							<tr>
-								<td>
-									<br/>
-									<strong> @@pickup_location@@: </strong>
-									<xsl:value-of select="notification_data/request/pickup_location_str"/>
-								</td>
-							</tr>
-							<tr>
-                                <td>
-                                    <strong> @@bib_auth@@: </strong>
-                                    <xsl:value-of select="notification_data/due_date_str"/>
-                                </td>
-                            </tr>
-							<tr>
-								<td>
-									<strong> @@circulation_note@@: </strong>
-									<xsl:value-of select="notification_data/circulation_note"/>
-								</td>
-							</tr>
+        <div class="messageArea">
+          <div class="messageBody">
 
-							
-							<xsl:if test="notification_data/citation_id !=''">
+            <!-- Item, Patron & Pickup Details -->
+            <table role="presentation" cellspacing="0" cellpadding="5" border="0">
+              <xsl:attribute name="style">
+                <xsl:call-template name="listStyleCss" /><!-- style.xsl -->
+              </xsl:attribute>
 
-							<tr>
-								<td>
-									<br/>
-									<strong> @@reading_list@@: </strong>
-									<xsl:value-of select="notification_data/reading_list_name" /> (<xsl:value-of select="notification_data/reading_list_code" />)
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<strong> @@citation_id@@: </strong>
-									<xsl:value-of select="notification_data/citation_id" />
-								</td>
-							</tr>
-							</xsl:if>
+              <xsl:if test="notification_data/barcode != ''">
+                <tr>
+                  <td style="padding-top: 10px;">
+                    <strong>@@item_barcode@@</strong>&#160;<img src="Barcode.png" alt="Item barcode" />
+                  </td>
+                </tr>
+              </xsl:if>
 
-						</table>
+              <xsl:if test="notification_data/patron_name != ''">
+                <tr>
+                  <td style="padding-top: 10px;">
+                    <strong>@@patron_name@@</strong>&#160;<xsl:value-of select="notification_data/patron_name" />
+                  </td>
+                </tr>
+              </xsl:if>
 
-						<br/><br/>
+              <xsl:if test="notification_data/request/display/normalized_title != ''">
+                <tr>
+                  <td style="padding-top: 10px;">
+                    <strong>@@title@@:</strong>&#160;<xsl:value-of select="notification_data/request/display/normalized_title" />
+                  </td>
+                </tr>
+              </xsl:if>
 
-						<table role='presentation' >
-							<tr>
-								<td>@@signature@@</td>
-							</tr>
-							<tr>
-								<td>
-									<xsl:value-of select="notification_data/library/name"/>
-								</td>
-							</tr>
-							<xsl:if test="notification_data/library/address/line1 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/library/address/line1"/>
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/library/address/line2 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/library/address/line2"/>
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/library/address/line3 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/library/address/line3"/>
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/library/address/line4 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/library/address/line4"/>
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/library/address/line5 !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/library/address/line5"/>
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/library/address/city !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/library/address/city"/>
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:if test="notification_data/library/address/country !=''">
-								<tr>
-									<td>
-										<xsl:value-of select="notification_data/library/address/country"/>
-									</td>
-								</tr>
+              <xsl:if test="notification_data/request/display/author != ''">
+                <tr>
+                  <td>
+                    <strong>@@author@@:</strong>&#160;<xsl:value-of select="notification_data/request/display/author" />
+                  </td>
+                </tr>
+              </xsl:if>
 
-							</xsl:if>
-						</table>
-					</div>
-				</div>
-				<xsl:call-template name="lastFooter"/>
-				<!-- footer.xsl -->
-			</body>
-		</html>
-	</xsl:template>
+              <xsl:if test="notification_data/request/pickup_location_str != ''">
+                <tr>
+                  <td style="padding-top: 10px;">
+                    <strong>@@pickup_location@@:</strong>&#160;<xsl:value-of select="notification_data/request/pickup_location_str" />
+                  </td>
+                </tr>
+              </xsl:if>
+
+              <xsl:if test="notification_data/due_date_str != ''">
+                <tr>
+                  <td>
+                    <strong>@@bib_auth@@:</strong>&#160;<xsl:value-of select="notification_data/due_date_str" />
+                  </td>
+                </tr>
+              </xsl:if>
+
+              <xsl:if test="notification_data/circulation_note != ''">
+                <tr>
+                  <td>
+                    <strong>@@circulation_note@@:</strong>&#160;<xsl:value-of select="notification_data/circulation_note" />
+                  </td>
+                </tr>
+              </xsl:if>
+
+              <xsl:if test="notification_data/citation_id != ''">
+                <tr>
+                  <td style="padding-top: 10px;">
+                    <strong>@@reading_list@@:</strong>&#160;<xsl:value-of select="notification_data/reading_list_name" />
+                    <xsl:if test="notification_data/reading_list_code != ''">
+                      <xsl:text> (</xsl:text><xsl:value-of select="notification_data/reading_list_code" /><xsl:text>)</xsl:text>
+                    </xsl:if>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>@@citation_id@@:</strong>&#160;<xsl:value-of select="notification_data/citation_id" />
+                  </td>
+                </tr>
+              </xsl:if>
+            </table>
+
+            <br />
+
+            <!-- Signature & Library Address Block -->
+            <table role="presentation" cellspacing="0" cellpadding="2" border="0">
+              <tr>
+                <td>@@signature@@</td>
+              </tr>
+              <tr>
+                <td>
+                  <address style="font-style: normal; line-height: 1.4; color: #333333;">
+                    <xsl:if test="notification_data/library/name != ''">
+                      <strong><xsl:value-of select="notification_data/library/name" /></strong><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/library/address/line1 != ''">
+                      <xsl:value-of select="notification_data/library/address/line1" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/library/address/line2 != ''">
+                      <xsl:value-of select="notification_data/library/address/line2" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/library/address/line3 != ''">
+                      <xsl:value-of select="notification_data/library/address/line3" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/library/address/line4 != ''">
+                      <xsl:value-of select="notification_data/library/address/line4" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/library/address/line5 != ''">
+                      <xsl:value-of select="notification_data/library/address/line5" /><br />
+                    </xsl:if>
+                    <xsl:if test="notification_data/library/address/city != ''">
+                      <xsl:value-of select="notification_data/library/address/city" />
+                      <xsl:if test="notification_data/library/address/country != ''">, </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="notification_data/library/address/country != ''">
+                      <xsl:value-of select="notification_data/library/address/country" />
+                    </xsl:if>
+                  </address>
+                </td>
+              </tr>
+            </table>
+
+          </div>
+        </div>
+
+        <!-- footer.xsl -->
+        <xsl:call-template name="lastFooter" />
+      </body>
+    </html>
+  </xsl:template>
 </xsl:stylesheet>
