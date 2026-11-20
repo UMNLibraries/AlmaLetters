@@ -1,111 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    
-    
-    <xsl:include href="header.xsl" />
-    <xsl:include href="senderReceiver.xsl" />
-    <xsl:include href="mailReason.xsl" />
-    <xsl:include href="footer.xsl" />
-    <xsl:include href="style.xsl" />
-    <xsl:include href="recordTitle.xsl" />
-    
-    <xsl:template match="/">
-        <html>
-            <head>
-                <xsl:call-template name="generalStyle" />
-            </head>
-            
-            <body>
-                <xsl:attribute name="style">
-                    <xsl:call-template name="bodyStyleCss" /> <!-- style.xsl -->
-                </xsl:attribute>
-                
-                <xsl:call-template name="head" /> <!-- header.xsl -->
-                <xsl:call-template name="senderReceiver" /> <!-- SenderReceiver.xsl -->
-                
-                <xsl:call-template name="toWhomIsConcerned" /> <!-- mailReason.xsl -->
-                
-                
-                
-                <div class="messageArea">
-                    <div class="messageBody">
-                        <table cellspacing="0" cellpadding="5" border="0">
-                            <xsl:choose>
-                                <xsl:when
-                                    test="/notification_data/phys_item_display/available_items/available_item/location_code = 'UMDIL'">
-                                    <tr>
-                                        <td>Your Interlibrary Loan request for the following title has been received. Please allow one hour for Interlibrary Loan staff to process the item before coming to the Martin Library circulation desk for pickup.
-                                     </td>
-                                    </tr>
-                                    <tr>
-                                    </tr>
-                                    <br/>
-                                    <tr>
-                                        <td>If you requested this item be delivered to your faculty office address, please expect the item to arrive in 2-3 working days.
-                                     </td>
-                                    </tr>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-                                    
-                                </xsl:when>
-                                <xsl:otherwise>                            
+  <xsl:include href="header.xsl" />
+  <xsl:include href="senderReceiver.xsl" />
+  <xsl:include href="mailReason.xsl" />
+  <xsl:include href="footer.xsl" />
+  <xsl:include href="style.xsl" />
+  <xsl:include href="recordTitle.xsl" />
 
-                                <tr>
-                                    <td>@@following_item_requested_on@@ <xsl:value-of select="notification_data/request/create_date"/>, @@can_picked_at@@ <xsl:value-of select="notification_data/request/assigned_unit_name"/>.</td>
-                                </tr>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                            
-                                <xsl:if test="notification_data/request/work_flow_entity/expiration_date">
-                                    <tr>
-                                        <td>
-                                            @@note_item_held_until@@ <xsl:value-of select="notification_data/request/work_flow_entity/expiration_date"/>.
-                                        </td>
-                                    </tr>
-                                </xsl:if>
-                            <tr>
-                                <td><xsl:call-template name="recordTitle" /> <!-- recordTitle.xsl --></td>
-                            </tr>
-                            <tr>
-                                <xsl:value-of select="notification_data/phys_item_display/available_items/available_item/barcode"/>
-                            </tr>                            
-                            
-                        </table>
-                    </div>
-                </div>
-                <br />
-                <table style="margin:1em 0 1em 0">
-                    <tbody><tr>
-                        <td>
-                            If you have any questions or if we can assist you further, <a href="https://www.lib.umn.edu/systemlibraries" target="_blank">please contact us at your campus library.</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <br />
-                <table>
-                    
-                    <tr><td>@@sincerely@@</td></tr>
-                    <tr><td>@@department@@</td></tr>
-                    
-                </table>
-                
-                
-                
-                
-                <xsl:call-template name="lastFooter" /> <!-- footer.xsl -->
-                <xsl:call-template name="myAccount" />
-                <xsl:call-template name="contactUs" />
-                <xsl:call-template name="Disclaimer" />
-            </body>
-        </html>
-    </xsl:template>
-    
-    
-    
+  <xsl:template match="/">
+    <html lang="en">
+      <xsl:if test="notification_data/languages/string">
+        <xsl:attribute name="lang">
+          <xsl:value-of select="notification_data/languages/string"/>
+        </xsl:attribute>
+      </xsl:if>
+
+      <head>
+        <title>
+          <xsl:value-of select="notification_data/general_data/subject"/>
+        </title>
+
+        <xsl:call-template name="generalStyle" />
+      </head>
+
+      <body>
+        <xsl:attribute name="style">
+          <xsl:call-template name="bodyStyleCss" /><!-- style.xsl -->
+        </xsl:attribute>
+
+        <xsl:call-template name="head" /><!-- header.xsl -->
+        <xsl:call-template name="senderReceiver" /><!-- senderReceiver.xsl -->
+
+        <br />
+        <xsl:call-template name="toWhomIsConcerned" /><!-- mailReason.xsl -->
+
+        <div class="messageArea">
+          <div class="messageBody">
+
+            <!-- Hold Shelf Pickup Details -->
+            <table role="presentation" cellspacing="0" cellpadding="5" border="0">
+              <xsl:choose>
+                <xsl:when test="/notification_data/phys_item_display/available_items/available_item/location_code = 'UMDIL'">
+                  <tr>
+                    <td>
+                      <p style="margin: 0 0 0.75em 0;">
+                        Your Interlibrary Loan request for the following title has been received. Please allow one hour for Interlibrary Loan staff to process the item before coming to the Martin Library circulation desk for pickup.
+                      </p>
+                      <p style="margin: 0;">
+                        If you requested this item be delivered to your faculty office address, please expect the item to arrive in 2-3 working days.
+                      </p>
+                    </td>
+                  </tr>
+                </xsl:when>
+                <xsl:otherwise>
+                  <tr>
+                    <td>
+                      @@following_item_requested_on@@ <xsl:value-of select="notification_data/request/create_date"/>, @@can_picked_at@@ <xsl:value-of select="notification_data/request/assigned_unit_name"/>.
+                    </td>
+                  </tr>
+                </xsl:otherwise>
+              </xsl:choose>
+
+              <xsl:if test="notification_data/request/work_flow_entity/expiration_date != ''">
+                <tr>
+                  <td>
+                    @@note_item_held_until@@ <xsl:value-of select="notification_data/request/work_flow_entity/expiration_date"/>.
+                  </td>
+                </tr>
+              </xsl:if>
+
+              <tr>
+                <td>
+                  <xsl:call-template name="recordTitle" /><!-- recordTitle.xsl -->
+                </td>
+              </tr>
+
+              <xsl:if test="notification_data/phys_item_display/available_items/available_item/barcode != ''">
+                <tr>
+                  <td>
+                    <xsl:value-of select="notification_data/phys_item_display/available_items/available_item/barcode"/>
+                  </td>
+                </tr>
+              </xsl:if>
+            </table>
+
+            <br />
+
+            <!-- Campus Library Assistance Link -->
+            <table role="presentation" cellspacing="0" cellpadding="5" border="0" style="margin: 1em 0;">
+              <tr>
+                <td>
+                  If you have any questions or if we can assist you further, <a href="https://www.lib.umn.edu/systemlibraries" target="_blank">please contact us at your campus library.</a>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Signature Table -->
+            <table role="presentation" cellspacing="0" cellpadding="2" border="0">
+              <tr><td>@@sincerely@@</td></tr>
+              <tr><td>@@department@@</td></tr>
+            </table>
+
+          </div>
+        </div>
+
+        <br />
+
+        <!-- footer.xsl -->
+        <xsl:call-template name="lastFooter" />
+        <xsl:call-template name="myAccount" />
+        <xsl:call-template name="contactUs" />
+        <xsl:call-template name="Disclaimer" />
+      </body>
+    </html>
+  </xsl:template>
 </xsl:stylesheet>
-
-
-
-
-
